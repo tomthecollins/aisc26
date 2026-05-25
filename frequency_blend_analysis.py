@@ -78,10 +78,25 @@ def load_audio(filepath, target_sr=None):
 
 def match_lengths(a, b):
     """
-    Truncate signals to equal length.
+    Pad the shorter signal with zeros so both
+    signals have equal length.
     """
-    min_len = min(len(a), len(b))
-    return a[:min_len], b[:min_len]
+
+    max_len = max(len(a), len(b))
+
+    a_padded = np.pad(
+        a,
+        (0, max_len - len(a)),
+        mode='constant'
+    )
+
+    b_padded = np.pad(
+        b,
+        (0, max_len - len(b)),
+        mode='constant'
+    )
+
+    return a_padded, b_padded
 
 
 def compute_fft(signal, sr):
